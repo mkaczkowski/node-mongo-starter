@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "58c039ee8060197ca0b52d4e",
+    "name": "Sample Name1",
+    "description": "Sample description 1",
+    "photo": "31231231231.jpeg",
+    "tags": [
+      "exclusive",
+      "sport"
+    ],
+    "created": "2017-06-08T19:05:50.010Z"
+  },
+  {
+    "_id": "72c039ee8060017ca0b52d4b",
+    "name": "Sample Name2",
+    "description": "Sample description 2",
+    "photo": "09312381203.jpeg",
+    "tags": [
+      "sport"
+    ],
+    "created": "2017-06-08T12:02:10.101Z"
+  }
+]
