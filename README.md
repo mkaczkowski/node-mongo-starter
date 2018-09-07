@@ -1,15 +1,6 @@
-# ⚛ node-mongo-starter
+# ⚛ property-explorer-api
 
-Node with Express and MongoDB boilerplate for everyone
-
-## 🕹 Features
-* [express (v4.16)](https://expressjs.com) - fast, unopinionated, minimalist web framework for Node.js
-* [mongoose (v5.1.3)](http://mongoosejs.com) - elegant mongodb object modeling
-* [passport](http://www.passportjs.org) - an authentication middleware
-* [nodemailer](https://www.nodemailer.com) - module to send emails
-
-Tweak React components in real time ⚛️⚡️
-* [ESLint](https://eslint.org) + [Prettier](https://prettier.io)
+Property Explorer API
 
 ## 🔧 Installation
 
