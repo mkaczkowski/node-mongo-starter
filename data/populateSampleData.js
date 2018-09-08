@@ -5,7 +5,7 @@ const debug = require('debug')('PropertyExplorer');
 dotenv.config({ path: __dirname + '/../variables.env' });
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.DATABASE);
+mongoose.connect(process.env.DATABASE, { useNewUrlParser: true });
 mongoose.Promise = global.Promise; // use ES6 promises in Mongoose
 
 const Property = require('../models/Property');

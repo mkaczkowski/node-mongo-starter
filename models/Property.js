@@ -1,38 +1,11 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
-const googleMapsClient = require('@google/maps');
-googleMapsClient.createClient({
-  key: process.env.GOOGLE_MAPS_API_KEY,
-  Promise: global.Promise,
-});
-
-//   "owner": "elaine",
-//   "address": {
-// "line1": "4",
-// "line2": "332b",
-// "line4": "Goswell Road",
-// "postCode": "EC1V 7LQ",
-// "city": "London",
-// "country": "U.K."
-// },
-// "airbnbId": 12220057,
-//   "numberOfBedrooms": 2,
-//   "numberOfBathrooms": 2,
-//   "incomeGenerated": 1200
-
-var addressSchema = new mongoose.Schema({
-  line1: String,
-  line2: String,
-  line4: String,
-  post: String,
-  city: String,
-  country: {
-    type: String,
-    uppercase: true
-  }
-});
-
+// const googleMapsClient = require('@google/maps');
+// googleMapsClient.createClient({
+//   key: process.env.GOOGLE_MAPS_API_KEY,
+//   Promise: global.Promise,
+// });
 
 const propertySchema = new mongoose.Schema(
   {
@@ -45,17 +18,41 @@ const propertySchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 100,
-      required: "Please specify an owner",
+      required: 'Please specify an owner',
     },
     address: {
-      type: addressSchema,
-      required: true
+      type: new mongoose.Schema({
+        line1: {
+          type: String,
+          required: 'Please specify a line1',
+        },
+        line2: String,
+        line3: String,
+        line4: {
+          type: String,
+          required: 'Please specify a line4',
+        },
+        postCode: {
+          type: String,
+          required: 'Please specify a post code',
+        },
+        city: {
+          type: String,
+          required: 'Please specify a city',
+        },
+        country: {
+          type: String,
+          required: 'Please specify a country',
+        },
+      }),
+      required: true,
     },
     incomeGenerated: {
       type: Number,
       min: 0,
       max: 99999999,
       default: 0,
+      required: 'Please specify an income generated',
     },
     numberOfBedrooms: {
       type: Number,
@@ -69,16 +66,6 @@ const propertySchema = new mongoose.Schema(
       max: 100,
       default: 0,
     },
-    // email: {
-    //   type: String,
-    //   unique: true,
-    //   lowercase: true,
-    //   trim: true,
-    //   validate: [validator.isEmail, 'Invalid Email Address'],
-    //   required: 'Please Supply an email address'
-    // },
-    photo: String,
-    tags: [String],
     location: {
       type: {
         type: String,
@@ -105,16 +92,18 @@ propertySchema.index({
  * METHODS
  */
 propertySchema.pre('save', async function(next) {
-  const geoResponse = await googleMapsClient.geocode({
-    address: this.address
-    // components: {
-    //   route: 'Macquarie St',
-    //   locality: 'Sydney',
-    //   postal_code: '2000',
-    //   country: 'Australia'
-    // }
-  }).asPromise();
-  console.log(geoResponse.json.results);
+  // const geoResponse = await googleMapsClient
+  //   .geocode({
+  //     address: this.address,
+  //     // components: {
+  //     //   route: 'Macquarie St',
+  //     //   locality: 'Sydney',
+  //     //   postal_code: '2000',
+  //     //   country: 'Australia'
+  //     // }
+  //   })
+  //   .asPromise();
+  // console.log(geoResponse.json.results);
 
   this.location = {
     type: 'Point',
