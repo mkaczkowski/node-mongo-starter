@@ -1,15 +1,19 @@
 {
   "name": "property-explorer-api",
   "version": "1.0.0",
+  "author": "Mariusz Kaczkowski",
   "private": true,
   "engines": {
     "node": ">= 7.6.0"
   },
   "scripts": {
+    "prestart":"test",
     "start": "node ./bin/www",
     "start:dev": "DEBUG=PropertyExplorer nodemon ./bin/www",
     "db:populate": "node ./data/populateSampleData.js",
-    "db:clean": "node ./data/populateSampleData.js --delete"
+    "db:clean": "node ./data/populateSampleData.js --delete",
+    "test": "jest --detectOpenHandles",
+    "coverage": "jest --coverage"
   },
   "dependencies": {
     "@google/maps": "^0.5.5",
@@ -28,9 +32,12 @@
   },
   "devDependencies": {
     "eslint": "^5.5.0",
+    "eslint-plugin-jest": "^21.22.0",
     "eslint-plugin-node": "^7.0.1",
+    "jest": "^23.5.0",
     "nodemon": "^1.18.4",
-    "prettier": "^1.14.2"
+    "prettier": "^1.14.2",
+    "supertest": "^3.3.0"
   },
   "nodemonConfig": {
     "verbose": true,

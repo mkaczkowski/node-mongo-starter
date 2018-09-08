@@ -92,18 +92,18 @@ propertySchema.index({
  * METHODS
  */
 propertySchema.pre('save', async function(next) {
-  // const geoResponse = await googleMapsClient
-  //   .geocode({
-  //     address: this.address,
-  //     // components: {
-  //     //   route: 'Macquarie St',
-  //     //   locality: 'Sydney',
-  //     //   postal_code: '2000',
-  //     //   country: 'Australia'
-  //     // }
-  //   })
-  //   .asPromise();
-  // console.log(geoResponse.json.results);
+  const geoResponse = await googleMapsClient
+    .geocode({
+      address: this.address,
+      // components: {
+      //   route: 'Macquarie St',
+      //   locality: 'Sydney',
+      //   postal_code: '2000',
+      //   country: 'Australia'
+      // }
+    })
+    .asPromise();
+  console.log(geoResponse.json.results);
 
   this.location = {
     type: 'Point',
