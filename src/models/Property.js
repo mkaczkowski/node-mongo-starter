@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
+const { getCoordinatesFromAddress } = require('../utils/maps');
 mongoose.Promise = global.Promise;
-
-// const googleMapsClient = require('@google/maps');
-// googleMapsClient.createClient({
-//   key: process.env.GOOGLE_MAPS_API_KEY,
-//   Promise: global.Promise,
-// });
 
 const propertySchema = new mongoose.Schema(
   {
@@ -91,28 +86,16 @@ propertySchema.index({
 /**
  * METHODS
  */
-propertySchema.pre('save', async function(next) {
-  const geoResponse = await googleMapsClient
-    .geocode({
-      address: this.address,
-      // components: {
-      //   route: 'Macquarie St',
-      //   locality: 'Sydney',
-      //   postal_code: '2000',
-      //   country: 'Australia'
-      // }
-    })
-    .asPromise();
-  console.log(geoResponse.json.results);
-
+propertySchema.pre('save', async next => {
+  const coordinates = await getCoordinatesFromAddress(this.address);
   this.location = {
     type: 'Point',
-    coordinates: [-73.97, 40.77],
+    coordinates: coordinates,
   };
   next();
 });
 
-propertySchema.statics.getItemsByLocation = function(long, lat) {
+propertySchema.statics.getPropertiesByCoordinates = function(long, lat) {
   return this.aggregate([
     {
       $geoNear: {
@@ -120,12 +103,12 @@ propertySchema.statics.getItemsByLocation = function(long, lat) {
           type: 'Point',
           coordinates: [long, lat],
         },
-        distanceField: 'distance',
         spherical: true,
-        maxDistance: 10000,
+        distanceField: 'distance',
+        maxDistance: 20000,
       },
     },
-    // { $sort: { count: -1 } },
+    { $sort: { distance: 1 } },
   ]);
 };
 

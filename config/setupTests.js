@@ -6,7 +6,7 @@ require('../src/models/Property');
 
 mongoose.model('Property');
 
-mongoose.Promise = global.Promise; // use ES6 Promise with mongoose
+mongoose.Promise = global.Promise;
 mongoose.connection.on('error', err => {
   // eslint-disable-next-line no-console
   console.error(err.message);

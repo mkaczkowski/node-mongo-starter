@@ -1,12 +1,18 @@
-# ⚛ property-explorer-api
+# 🏠 property-explorer-api
 
-Property Explorer API
+Property Explorer REST API
+
+```bash
+GET /properties
+GET /properties?longitude=12.32&latitude=-23.12
+PATCH /properties/:id
+```
 
 ## 🔧 Installation
 
 Clone repository to your local workspace:
 ```bash
-git clone https://github.com/mkaczkowski/node-mongo-starter.git
+git clone https://github.com/mkaczkowski/property-explorer-api.git
 ```
 
 Install project dependencies using npm or yarn:
@@ -22,6 +28,14 @@ Start developing your own app:
 
 ```bash
 npm run start:dev or yarn start:dev
+```
+
+## ✅ Testing
+
+Test your code:
+
+```bash
+npm run test or yarn test
 ```
 
 ## 👌 Production

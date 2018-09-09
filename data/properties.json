@@ -1,6 +1,5 @@
 [
   {
-    "_id": "58c039ee8060197ca0b52d4e",
     "owner": "carlos",
     "address": {
       "line1": "Flat 5",
@@ -15,7 +14,6 @@
     "incomeGenerated": 2000.34
   },
   {
-    "_id": "42c039ee8060997ca0b52d4b",
     "owner": "ankur",
     "address": {
       "line1": "4",
@@ -32,7 +30,6 @@
     "incomeGenerated": 10000
   },
   {
-    "_id": "42c039ee8060197ca0b52d4b",
     "owner": "elaine",
     "address": {
       "line1": "4",

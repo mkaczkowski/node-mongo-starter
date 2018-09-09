@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
-const faker = require('faker');
 const app = require('../app');
+const { createFakeProperty } = require('../utils/fake');
 
 //TODO create a mongodb-memory-server and setup / tearDown fresh DB
 describe('Integration API testing', () => {
@@ -17,38 +17,46 @@ describe('Integration API testing', () => {
   });
 
   describe('GET /properties', () => {
-    it('should respond with json containing a list of all properties', async () => {
+    it('should pass with a list of all properties', async () => {
       await request(app)
         .get('/properties')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
         .expect(response => {
-          expect(JSON.parse(response.text)).toBeDefined();
-          expect(JSON.parse(response.text).length).toBeGreaterThan(0);
+          const propertyResult = JSON.parse(response.text);
+          expect(propertyResult).toBeDefined();
+          expect(propertyResult.length).toBeGreaterThan(0);
 
           // OR use snapshot match testing
           // expect(response.text).toMatchSnapshot();
         });
     });
+
+    it('should pass with a list of all properties near given coordinates', async () => {
+      await request(app)
+        .get('/properties?longitude=1.00&latitude=1.00')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .expect(response => {
+          const propertyResult = JSON.parse(response.text);
+          expect(propertyResult).toBeDefined();
+          expect(propertyResult.length).toBeGreaterThan(0);
+        });
+    });
+
+    it('should fail with invalid search query', async () => {
+      await request(app)
+        .get('/properties?longitude=asd&latitude=dsa')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(422);
+    });
   });
 
   describe('PATCH /properties', () => {
-    //create sample data with Faker
-    const data = {
-      airbnbId: '3512500',
-      owner: faker.name.findName(),
-      incomeGenerated: faker.finance.amount(),
-      address: {
-        line1: faker.address.streetPrefix(),
-        line2: faker.address.secondaryAddress(),
-        line3: faker.address.streetSuffix(),
-        line4: faker.address.secondaryAddress(),
-        postCode: faker.address.zipCode(),
-        city: faker.address.city(),
-        country: faker.address.country(),
-      },
-    };
+    const data = createFakeProperty('3512500');
 
     it('should respond with 200 OK', async () => {
       await request(app)
@@ -81,16 +89,16 @@ describe('Integration API testing', () => {
     });
 
     it.each([
-      [data, 200],
+      [data, 200], //same as above but it's here to check if it.each is working correctly
       [{ ...data, owner: undefined }, 422],
       [{ ...data, owner: null }, 422],
       [{ ...data, owner: '' }, 422],
-      [{ ...data, address:{...data.address, line1:undefined} }, 422],
-      [{ ...data, address:{...data.address, line2:undefined} }, 200],
-      [{ ...data, address:{...data.address, line3:undefined} }, 200],
-      [{ ...data, address:{...data.address, postCode:undefined} }, 422],
-      [{ ...data, address:{...data.address, city:undefined} }, 422],
-      [{ ...data, address:{...data.address, country:undefined} }, 422],
+      [{ ...data, address: { ...data.address, line1: undefined } }, 422],
+      [{ ...data, address: { ...data.address, line2: undefined } }, 200],
+      [{ ...data, address: { ...data.address, line3: undefined } }, 200],
+      [{ ...data, address: { ...data.address, postCode: undefined } }, 422],
+      [{ ...data, address: { ...data.address, city: undefined } }, 422],
+      [{ ...data, address: { ...data.address, country: undefined } }, 422],
     ])('%j should respond with %i', async (data, statusCode) => {
       await request(app)
         .patch('/properties/3512500')
