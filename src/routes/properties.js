@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { catchErrors } = require('../handlers/errorHandlers');
 const propertyController = require('../controllers/propertyController');
+const { validateProperty } = require('../controllers/propertyController');
+const { validateResult } = require('../utils/validators');
 
-router.get('/:id', catchErrors(propertyController.getPropertyById));
+router.patch(
+  '/:id',
+  validateProperty,
+  validateResult,
+  propertyController.updateProperty
+);
 
-router.patch('/:id', catchErrors(propertyController.updateProperty));
-
-router.get('/', catchErrors(propertyController.getProperties));
+router.get('/', propertyController.getProperties);
 
 module.exports = router;

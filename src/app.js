@@ -13,7 +13,7 @@ app.use(logger('dev'));
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressValidator());
+// app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -21,10 +21,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/properties', require('./routes/properties'));
 
 // errors
-app.use(errorHandlers.notFound);
-if (app.get('env') === 'development') {
-  app.use(errorHandlers.developmentErrors);
-}
-app.use(errorHandlers.productionErrors);
+// app.use(errorHandlers.notFound);
+// if (app.get('env') === 'development') {
+//   app.use(errorHandlers.developmentErrors);
+// }
+// app.use(errorHandlers.productionErrors);
 
 module.exports = app;
