@@ -6,8 +6,8 @@ const { sanitizeQuery } = require('express-validator/filter');
 module.exports.getProperties = async (req, res) => {
   let properties;
   if (req.query.hasOwnProperty('longitude') && req.query.hasOwnProperty('latitude')) {
-    const { longitude, latitude } = req.query;
-    properties = await Property.getPropertiesByCoordinates(longitude, latitude);
+    const { latitude, longitude } = req.query;
+    properties = await Property.getPropertiesByCoordinates(latitude, longitude);
   } else {
     properties = await Property.find();
   }

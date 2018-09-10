@@ -88,7 +88,7 @@ class PropertyList extends React.PureComponent<PropertiesContextProps, PropertyL
       <div styleName="wrapper">
         <Map center={this.getRestrictedCoordinates()} properties={properties} isRestricted={isRestricted} />
         <ButtonBar buttons={navigationButtons} />
-        <h2>Properties found ({properties.length})</h2>
+        <h2>Properties found ({isLoading ? '-' : properties.length})</h2>
         <hr />
         {isLoading ? this.renderLoading() : this.renderList(properties)}
       </div>

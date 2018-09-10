@@ -37,7 +37,7 @@ class Map extends Component<MapProps> {
     return (
       !_isEqual(nextProps.properties, this.props.properties) ||
       nextProps.isRestricted !== this.props.isRestricted
-    )
+    );
   }
 
   componentDidUpdate(prevProps: MapProps) {

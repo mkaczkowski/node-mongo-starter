@@ -14,7 +14,7 @@
     "start:dev": "run-p start:dev:server start:dev:web",
     "start:dev:server": "cd server && yarn start:dev",
     "start:dev:web": "cd web && yarn start",
-    "build": "cd web && yarn build && mv dist/* server/public/"
+    "build": "cd web && yarn build && cp -r dist/* server/public/"
   },
   "devDependencies": {
     "npm-run-all": "^4.1.3"

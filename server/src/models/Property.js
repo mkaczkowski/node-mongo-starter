@@ -95,13 +95,15 @@ propertySchema.pre('save', async next => {
   next();
 });
 
-propertySchema.statics.getPropertiesByCoordinates = function(long, lat) {
+propertySchema.statics.getPropertiesByCoordinates = function(lat, long) {
+  console.log("long:"+long)
+  console.log("lat:"+lat)
   return this.aggregate([
     {
       $geoNear: {
         near: {
           type: 'Point',
-          coordinates: [long, lat],
+          coordinates: [lat, long],
         },
         spherical: true,
         distanceField: 'distance',
