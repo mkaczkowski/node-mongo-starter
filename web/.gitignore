@@ -1,0 +1,24 @@
+# IDE
+.idea
+
+# Logs
+npm-debug.log*
+
+# Coverage
+coverage
+
+# Dependency directories
+node_modules
+
+# Optional npm cache directory
+.npm
+
+# Build directory
+dist
+
+# misc
+.DS_Store
+yarn-debug.log*
+yarn-error.log*
+.docz
+*.local

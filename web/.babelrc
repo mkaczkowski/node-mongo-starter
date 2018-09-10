@@ -1,0 +1,18 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "modules": false, "useBuiltIns": "usage", "debug": false }],
+    "@babel/preset-react",
+    "@babel/preset-flow"
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from",
+    "react-css-modules"
+  ],
+  "overrides": [{
+    "test": ["./config"],
+    "presets": [
+      ["@babel/preset-env"]
+    ]
+  }]
+}
