@@ -1,0 +1,44 @@
+{
+  "icons": [
+    {
+      "src": "icon_512x512.d81305358fe24a984fbc8a8dde1ee7f5.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_384x384.eaffd8c5885bcdff29fa8c790418128d.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_256x256.4e06c223ca186e042496b639c98e799b.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_192x192.21544f018b82779fc58dce246c5a6762.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_128x128.7b6444e74feb4c55a366ff8fc8624329.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icon_96x96.6d8e5907c00e549ec2d9bf5fda399121.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    }
+  ],
+  "name": "Property Explorer",
+  "short_name": "PropertyExplorer",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": "./index.html",
+  "author": "Mariusz Kaczkowski",
+  "description": "Property Explorer is awesome",
+  "background_color": "#FFFFFF",
+  "theme_color": "#000000",
+  "lang": "en-US"
+}
