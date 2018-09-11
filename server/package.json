@@ -12,7 +12,7 @@
     "start:dev": "DEBUG=PropertyExplorer nodemon ./bin/www",
     "db:populate": "node ./data/populateSampleData.js",
     "db:clean": "node ./data/populateSampleData.js --delete",
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "coverage": "jest --coverage"
   },
   "dependencies": {

@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('../app');
 const { createFakeProperty } = require('../utils/fake');
 
-//TODO create a mongodb-memory-server and setup / tearDown fresh DB
+//TODO create a mongodb-memory-server and setup / tearDown fresh DB with fake data
 describe('Integration API testing', () => {
   beforeAll(async () => {
     await mongoose.connect(
@@ -35,7 +35,7 @@ describe('Integration API testing', () => {
 
     it('should pass with a list of all properties near given coordinates', async () => {
       await request(app)
-        .get('/api/properties?longitude=1.00&latitude=1.00')
+        .get('/api/properties?longitude=-0.1277801&latitude=51.5073835')
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
         .expect(200)
@@ -55,12 +55,48 @@ describe('Integration API testing', () => {
     });
   });
 
+  describe('GET /api/property/:id', () => {
+    const _id = '5b980656cf3e6889a8aabf7e';
+    it('should return found property', async () => {
+      await request(app)
+        .get('/api/properties/' + _id)
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200)
+        .expect(response => {
+          const propertyResult = JSON.parse(response.text);
+          expect(propertyResult).toBeDefined();
+          expect(propertyResult._id).toEqual(_id);
+          expect(propertyResult.numberOfBedrooms).toBeDefined();
+          expect(propertyResult.numberOfBathrooms).toBeDefined();
+          expect(propertyResult.location).toBeDefined();
+          expect(propertyResult.airbnbId).toBeDefined();
+          expect(propertyResult.incomeGenerated).toBeDefined();
+          expect(propertyResult.address).toBeDefined();
+          expect(propertyResult.address.line1).toBeDefined();
+          expect(propertyResult.address.line4).toBeDefined();
+          expect(propertyResult.address.postCode).toBeDefined();
+          expect(propertyResult.address.city).toBeDefined();
+          expect(propertyResult.address.country).toBeDefined();
+        });
+    });
+
+    it('should fail invalid id', async () => {
+      await request(app)
+        .get('/api/properties/12345678')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(404);
+    });
+  });
+
   describe('PATCH /api/properties', () => {
-    const data = createFakeProperty('3512500');
+    const _id = '5b980656cf3e6889a8aabf7e';
+    const data = createFakeProperty(_id);
 
     it('should respond with 200 OK', async () => {
       await request(app)
-        .patch('/api/properties/3512500')
+        .patch('/api/properties/' + _id)
         .send(data)
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
@@ -68,16 +104,14 @@ describe('Integration API testing', () => {
         .expect(response => {
           const propertyResult = JSON.parse(response.text);
           expect(propertyResult).toBeDefined();
-          expect(propertyResult._id).toBeUndefined();
+          expect(propertyResult._id).toEqual(_id);
           expect(propertyResult.numberOfBedrooms).toBeUndefined();
           expect(propertyResult.numberOfBathrooms).toBeUndefined();
-          expect(propertyResult.location).toBeUndefined();
-          expect(propertyResult.airbnbId).toEqual(3512500);
+          expect(propertyResult.airbnbId).toBeUndefined();
+          expect(propertyResult.location).toBeDefined();
           expect(propertyResult.incomeGenerated).toBeDefined();
           expect(propertyResult.address).toBeDefined();
           expect(propertyResult.address.line1).toBeDefined();
-          expect(propertyResult.address.line2).toBeDefined();
-          expect(propertyResult.address.line3).toBeDefined();
           expect(propertyResult.address.line4).toBeDefined();
           expect(propertyResult.address.postCode).toBeDefined();
           expect(propertyResult.address.city).toBeDefined();
@@ -101,7 +135,7 @@ describe('Integration API testing', () => {
       [{ ...data, address: { ...data.address, country: undefined } }, 422],
     ])('%j should respond with %i', async (data, statusCode) => {
       await request(app)
-        .patch('/api/properties/3512500')
+        .patch('/api/properties/' + _id)
         .send(data)
         .expect(statusCode);
     });

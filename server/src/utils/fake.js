@@ -6,7 +6,8 @@
 const faker = require('faker');
 
 module.exports.createFakeProperty = id => ({
-  airbnbId: id,
+  _id: id,
+  airbnbId: faker.random.number(10000),
   owner: faker.name.findName(),
   incomeGenerated: faker.finance.amount(),
   address: {

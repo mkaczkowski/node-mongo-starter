@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import _throttle from 'lodash/throttle';
 import classnames from 'classnames';
 import styles from './Header.css';
@@ -8,7 +8,7 @@ type HeaderState = {
   isScrolled: boolean,
 };
 
-class Header extends React.Component<null, HeaderState> {
+class Header extends React.PureComponent<null, HeaderState> {
   //$FlowIssue
   scrollY: number;
   scrollListener: any;

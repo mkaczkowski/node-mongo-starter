@@ -2,7 +2,7 @@
 /**
  * Configurable action buttons toolbox with access to data context
  */
-import React from 'react';
+import * as React from 'react';
 import { Icon } from 'react-icons-kit';
 import { edit } from 'react-icons-kit/feather/edit';
 import ReactTooltip from 'react-tooltip';
@@ -13,7 +13,7 @@ import type { PropertiesContextProps } from '../../../providers/Properties';
 import {} from './ActionButtons.css';
 
 export type ActionButtonsType = PropertiesContextProps & {
-  airbnbId?: number,
+  id?: number,
   edit?: boolean,
   onShowEdit: () => void,
   onCancel: (params: any) => void,

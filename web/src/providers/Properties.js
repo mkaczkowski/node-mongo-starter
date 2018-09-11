@@ -7,7 +7,7 @@ import _findIndex from 'lodash/findIndex';
 import updateImmutable from 'immutability-helper';
 import * as PropertyApi from '../api/property';
 import type { Property } from '../model/Property';
-import type { GetPropertiesAPI, UpdatePropertyAPI } from '../api/property';
+import type { GetPropertiesAPI, GetPropertyByIdAPI, UpdatePropertyAPI } from '../api/property';
 
 export type PropertiesProviderState = { isLoading: boolean, properties: Property[] };
 
@@ -28,6 +28,7 @@ export type PropertiesContextProps = {
   api: {
     +update: (params: ActionType) => Promise<any>,
     +fetchAll: () => Promise<any>,
+    +fetchById: (id: string) => Promise<any>,
     +fetchByCoordinates: () => Promise<any>,
   },
 };
@@ -35,7 +36,7 @@ export type PropertiesContextProps = {
 //$FlowIssue
 export const PropertiesContext = React.createContext();
 
-class PropertiesProvider extends React.Component<PropertiesProviderProps, PropertiesProviderState> {
+class PropertiesProvider extends React.PureComponent<PropertiesProviderProps, PropertiesProviderState> {
   state = {
     isLoading: true,
     properties: [],
@@ -60,9 +61,14 @@ class PropertiesProvider extends React.Component<PropertiesProviderProps, Proper
     return this.fetch(data);
   };
 
+  fetchById = async (id: string) => {
+    const data: GetPropertyByIdAPI = { id };
+    return PropertyApi.getPropertyById(data);
+  };
+
   update = async ({ values, onSuccess, onError }: ActionType) => {
     const data: UpdatePropertyAPI = {
-      property: values,
+      property: { ...values },
     };
     try {
       const updatedProperty = await PropertyApi.updateProperty(data);
@@ -74,7 +80,7 @@ class PropertiesProvider extends React.Component<PropertiesProviderProps, Proper
   };
 
   refreshUpdatedProperty = (property: Property) => {
-    const itemIndex = _findIndex(this.state.properties, { airbnbId: property.airbnbId });
+    const itemIndex = _findIndex(this.state.properties, { _id: property._id });
     this.setState(state => ({ properties: updateImmutable(state.properties, { [itemIndex]: { $set: property } }) }));
   };
 
@@ -86,6 +92,7 @@ class PropertiesProvider extends React.Component<PropertiesProviderProps, Proper
       api: {
         fetchAll: this.fetchAll,
         fetchByCoordinates: this.fetchByCoordinates,
+        fetchById: this.fetchById,
         update: this.update,
       },
     };

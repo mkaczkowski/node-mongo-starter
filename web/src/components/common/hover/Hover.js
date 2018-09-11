@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 
-class Hover extends React.Component {
+class Hover extends React.PureComponent {
   state = {
     isMouseInside: false,
   };

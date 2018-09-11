@@ -28,7 +28,7 @@ module.exports.getCoordinatesFromAddress = async address => {
       })
       .asPromise();
 
-    console.log(JSON.stringify(geoResponse.json.results[0].geometry.location));
+    // console.log(JSON.stringify(geoResponse.json.results[0].geometry.location));
     const results = geoResponse.json.results;
     if (results.length > 0) {
       const { lat, lng } = results[0].geometry.location;

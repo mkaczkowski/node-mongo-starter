@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import Button from '../../common/button/Button';
 import type { ActionButtonsType } from '../../complex/actionButtons/ActionButtons';
 import {} from './FormButtons.css';

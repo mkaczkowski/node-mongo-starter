@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { PropertiesContext } from '../../providers/Properties';
 import PropertyList from './PropertyList';
 

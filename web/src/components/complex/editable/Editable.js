@@ -2,14 +2,14 @@
 /**
  * Section wrapper for switching between preview and editable form using data context
  */
-import React from 'react';
+import * as React from 'react';
 import { PropertiesContext } from '../../../providers/Properties';
 import type { Property } from '../../../model/Property';
 
 export type EditableItemProps = {
   children: any,
-// eslint-disable-next-line react/no-unused-prop-types
-  property?: Property,
+  // eslint-disable-next-line react/no-unused-prop-types
+  property?: Property
 };
 
 export type EditableItemState = {|
@@ -31,9 +31,9 @@ class Editable extends React.PureComponent<EditableItemProps, EditableItemState>
     return (
       <PropertiesContext.Consumer>
         {context => {
-          const combinedProps = context && {
+          const combinedProps = {
+            ...context,
             ...this.props,
-            properties: context.properties,
             onShowEdit: this.onShowEdit,
             onCancel: this.onHideEdit,
             onUpdate: params => context.api.update({ ...params, onSuccess: enchantSuccessCallback(params) }),

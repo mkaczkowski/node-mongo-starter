@@ -25,20 +25,25 @@ async function deleteData() {
 
 async function populateSampleData() {
   try {
-    const propertiesWithLocation = await Promise.all(
-      properties.map(async prop => {
-        const coordinates = await getCoordinatesFromAddress(prop.address);
-        return {
-          ...prop,
-          location: {
-            coordinates,
-            type: 'Point',
-          },
-        };
-      })
-    );
-    //uncomment line below only for tests when google maps api is not working / timeout
-    // await Property.insertMany(properties);
+    if (process.env.GOOGLE_API_DISABLED !== 'true') {
+      const propertiesWithLocation = await Promise.all(
+        properties.map(async prop => {
+          const coordinates = await getCoordinatesFromAddress(prop.address);
+          return {
+            ...prop,
+            location: {
+              coordinates,
+              type: 'Point',
+            },
+          };
+        })
+      );
+      await Property.insertMany(propertiesWithLocation);
+    } else {
+      //only for tests when google maps api is not working / timeout
+      await Property.insertMany(properties);
+    }
+
     debug('Sample data populated!');
     process.exit();
   } catch (e) {

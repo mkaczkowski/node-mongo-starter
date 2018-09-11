@@ -94,7 +94,7 @@ class Map extends Component<MapProps> {
       this.infoWindow.setContent(
         `<p><b>${property.owner}</b><br/>
         ${property.address.line1}<br/>
-        ${property.incomeGenerated}£</p>`
+        ${property.incomeGenerated} £</p>`
       );
       this.infoWindow.open(this.map, marker);
     });

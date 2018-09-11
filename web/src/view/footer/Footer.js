@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import { linkedin as linkedinIcon } from 'react-icons-kit/feather/linkedin';
 import Button from '../../components/common/button';
 import './Footer.css';
