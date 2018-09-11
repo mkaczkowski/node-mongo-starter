@@ -109,7 +109,8 @@ class PropertyItemEditable extends React.Component<PropertyItemEditableProps, Pr
                   <div styleName="field" className="group-item">
                     <FormButtons {...formProps} onCancel={onCancel} />
                   </div>
-                  <DisplayFormikState {...formProps} debug />
+                  {/*DEV ONLY - Change debug to true to display additional info*/}
+                  <DisplayFormikState {...formProps} debug={false} />
                 </form>
               );
             }}

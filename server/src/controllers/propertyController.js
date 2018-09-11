@@ -3,13 +3,17 @@ const Property = mongoose.model('Property');
 const { check, query } = require('express-validator/check');
 const { sanitizeQuery } = require('express-validator/filter');
 
+// Limit fields to be send back with response for specific requests
 const basicFields = 'owner address incomeGenerated location';
 const fullFields = '-created_at, -updated_at -__v';
 
-module.exports.getProperties = async (req, res) => {
+/*
+  API
+*/
+module.exports.getProperties = async ({ query }, res) => {
   let properties;
-  if (req.query.hasOwnProperty('longitude') && req.query.hasOwnProperty('latitude')) {
-    const { latitude, longitude } = req.query;
+  if (query.hasOwnProperty('longitude') && query.hasOwnProperty('latitude')) {
+    const { latitude, longitude } = query;
     properties = await Property.getPropertiesByCoordinates(latitude, longitude).exec();
   } else {
     properties = await Property.find({}, basicFields).exec();
@@ -17,25 +21,20 @@ module.exports.getProperties = async (req, res) => {
   res.json(properties);
 };
 
-module.exports.getProperty = async (req, res) => {
-  const { id } = req.params;
-  try{
+module.exports.getProperty = async ({ params: { id } }, res) => {
+  try {
     const property = await Property.findById(id, fullFields).exec();
     res.json(property);
-  }catch(err){
+  } catch (err) {
     return res.status(404).json({ err });
   }
 };
 
-module.exports.updateProperty = async (req, res) => {
-  const { id } = req.params;
-  const changedProperty = req.body;
-
+module.exports.updateProperty = async ({ params: { id }, body: changedProperty }, res) => {
   const property = await Property.findByIdAndUpdate(id, changedProperty, {
     new: true,
     runValidators: true,
-  })
-    .select(basicFields)
+  }).select(basicFields)
     .exec();
 
   res.json(property);
@@ -45,55 +44,25 @@ module.exports.updateProperty = async (req, res) => {
   Validation
 */
 module.exports.validateQuery = [
-  query('longitude')
-    .optional()
-    .isDecimal(),
-  query('latitude')
-    .optional()
-    .isDecimal(),
+  query('longitude').optional().isDecimal(),
+  query('latitude').optional().isDecimal(),
   sanitizeQuery('longitude').toFloat(),
   sanitizeQuery('latitude').toFloat(),
 ];
 
 module.exports.validateProperty = [
   check('airbnbId').isNumeric(),
-  check('owner')
-    .isString()
-    .not()
-    .isEmpty(),
+  check('owner').isString().not().isEmpty(),
   check('incomeGenerated').isDecimal(),
   check('address').exists(),
-  check('address.line1')
-    .isString()
-    .not()
-    .isEmpty(),
-  check('address.line2')
-    .optional()
-    .isString(),
-  check('address.line3')
-    .optional()
-    .isString(),
-  check('address.line4')
-    .isString()
-    .not()
-    .isEmpty(),
-  check('address.postCode')
-    .isString()
-    .not()
-    .isEmpty(),
-  check('address.city')
-    .isString()
-    .not()
-    .isEmpty(),
-  check('address.country')
-    .isString()
-    .not()
-    .isEmpty(),
+  check('address.line1').isString().not().isEmpty(),
+  check('address.line2').optional().isString(),
+  check('address.line3').optional().isString(),
+  check('address.line4').isString().not().isEmpty(),
+  check('address.postCode').isString().not().isEmpty(),
+  check('address.city').isString().not().isEmpty(),
+  check('address.country').isString().not().isEmpty(),
   check('airbnbId').isDecimal(),
-  check('numberOfBedrooms')
-    .optional()
-    .isInt(),
-  check('numberOfBathrooms')
-    .optional()
-    .isInt(),
+  check('numberOfBedrooms').optional().isInt(),
+  check('numberOfBathrooms').optional().isInt(),
 ];
