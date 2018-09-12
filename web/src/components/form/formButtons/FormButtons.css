@@ -1,4 +1,14 @@
 .wrapper {
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+
+  & > * {
+    flex: 1;
+
+    &:not(:first-child){
+      margin-left: 1em;
+     }
+
+  }
 }

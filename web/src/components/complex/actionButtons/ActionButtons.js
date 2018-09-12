@@ -22,11 +22,9 @@ export type ActionButtonsType = PropertiesContextProps & {
 
 const ActionButtons = (props: ActionButtonsType) => (
   <div styleName="wrapper">
-    <div className="group gap">
-      <Button type="button" data-tip="Edit" onClick={props.onShowEdit}>
-        <Icon icon={edit} />
+      <Button data-tip="Edit" onClick={props.onShowEdit}>
+        <Icon icon={edit} size={48}/>
       </Button>
-    </div>
     <ReactTooltip effect="solid" delayShow={300} />
   </div>
 );

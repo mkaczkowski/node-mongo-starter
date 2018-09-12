@@ -2,32 +2,37 @@
 
 :root {
   --button-background: var(--color-white);
-  --button-background-primary: var(--color-blue);
-  --button-background-secondary: var(--color-red);
+  --button-color: var(--color-gray);
+  --button-primary-background: var(--color-blue);
+  --button-primary-color: var(--color-white);
+  --button-secondary-background: var(--color-red);
+  --button-secondary-color: var(--color-gray);
   --button-background-icon: transparent;
 }
 
 button {
   display: inline-block;
+  min-height: 35px;
   padding: 0.3em 1.2em;
   margin: 0 0.1em 0.1em 0;
-  border: 0.1em solid rgba(255, 255, 255, 0);
-  border-radius: 0.25em;
+  border: 0.1em solid #e0e0e0;
+  border-radius: 0.35em;
   box-sizing: border-box;
   text-decoration: none;
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  color: #ffffff;
-  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
+  color: var(--button-color);
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.15);
   text-align: center;
   transition: all 0.2s;
   cursor:pointer;
   appearance: none;
+  white-space: nowrap;
   outline: none;
 
   &:hover,
   &:focus {
-    border-color: rgba(255, 255, 255, 1);
+     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
   }
 
   &[disabled] {
@@ -43,9 +48,11 @@ button {
 }
 
 .primary {
-  background-color: var(--button-background-primary);
+  background-color: var(--button-primary-background);
+  color: var(--button-primary-color);
+
 }
 
 .secondary {
-  background-color: var(--button-background-secondary);
+  background-color: var(--button-secondary-background);
 }

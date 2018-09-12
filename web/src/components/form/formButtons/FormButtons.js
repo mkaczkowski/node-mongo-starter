@@ -10,14 +10,12 @@ export type FormButtonsType = ActionButtonsType & {
 
 const FormButtons = ({ isSubmitting, onCancel }: FormButtonsType) => (
   <div styleName="wrapper">
-    <div className="group gap">
-      <Button type="button" disabled={isSubmitting} onClick={onCancel}>
-        Cancel
-      </Button>
-      <Button type="submit" primary disabled={isSubmitting} loading={isSubmitting}>
-        Save
-      </Button>
-    </div>
+    <Button type="button" disabled={isSubmitting} onClick={onCancel}>
+      Cancel
+    </Button>
+    <Button type="submit" primary disabled={isSubmitting} loading={isSubmitting}>
+      Save
+    </Button>
   </div>
 );
 

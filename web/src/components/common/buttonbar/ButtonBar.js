@@ -38,12 +38,15 @@ class ButtonBar extends React.PureComponent<ButtonBarProps, ButtonBarState> {
     const { className, buttons } = this.props;
     const { active } = this.state;
     return (
+
       <nav styleName="wrapper" className={className}>
-        {buttons.map(({ label }, index) => (
-          <Button name={index} primary={index === active} onClick={this.onClickHandler} key={label}>
-            {label}
-          </Button>
-        ))}
+        <div styleName="inner-wrapper">
+          {buttons.map(({ label }, index) => (
+            <Button name={index} primary={index === active} onClick={this.onClickHandler} key={label}>
+              {label}
+            </Button>
+          ))}
+        </div>
       </nav>
     );
   }

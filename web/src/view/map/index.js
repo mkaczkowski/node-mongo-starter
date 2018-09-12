@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { PropertiesContext } from '../../providers/Properties';
-import Header from './Header';
+import Map from './../../components/complex/map';
 
 //prettier-ignore
-export default () => (
+export default (props) => (
   <PropertiesContext.Consumer>
-    { context => <Header {...context} />}
+    { context => <Map {...context} {...props}/>}
   </PropertiesContext.Consumer>
 );

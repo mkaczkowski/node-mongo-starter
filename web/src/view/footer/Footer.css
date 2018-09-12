@@ -1,7 +1,0 @@
-@import '../../styles/variables.css';
-
-.inner-wrapper{
-  @media (--phone) {
-    text-align: center;
-  }
-}

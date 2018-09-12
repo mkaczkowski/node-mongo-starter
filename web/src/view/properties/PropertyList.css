@@ -1,8 +1,20 @@
 .wrapper {
-  margin-top: 1rem;
+  margin: 0 auto;
+  padding: 0 0 2rem;
+  background-image: url('./../../assets/svg/pattern.svg');
+  background-repeat: repeat;
 
   & > nav {
-    margin-top: 1rem;
-    margin-bottom: 2rem;
+    padding: 1rem 0;
   }
+}
+
+.product-list {
+  width: 80%;
+  max-width: 700px;
+  margin: 2rem auto 0;
+  padding: 1rem 2rem 2rem;
+  background: white;
+  border-radius: 0.3rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }

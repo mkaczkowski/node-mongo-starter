@@ -12,12 +12,15 @@ import type { PropertyItemProps } from '../PropertyItem';
 import type { Property } from '../../../../model/Property';
 
 import './PropertyItemEditable.css';
+import { integer } from '../../../../util/validation/validation';
 
 type InputProps = {
   title: string,
   name: string,
+  //TODO make more generic validators
   required?: boolean,
   numeric?: boolean,
+  integer?: boolean,
 };
 
 const inputs: InputProps[] = [
@@ -31,8 +34,8 @@ const inputs: InputProps[] = [
   { title: 'Country', name: 'country', required: true },
   { title: 'Income Generated', name: 'incomeGenerated', required: true, numeric: true },
   { title: 'Airbnb Id', name: 'airbnbId', required: true },
-  { title: 'Number of bedrooms', name: 'numberOfBedrooms', numeric: true },
-  { title: 'Number of bathrooms', name: 'numberOfBathrooms', numeric: true },
+  { title: 'Number of bedrooms', name: 'numberOfBedrooms', integer: true },
+  { title: 'Number of bathrooms', name: 'numberOfBathrooms', integer: true },
 ];
 
 const renderField = ({ title, required, name }, { values, errors, touched, handleBlur, handleChange }) => (
@@ -79,9 +82,11 @@ class PropertyItemEditable extends React.Component<PropertyItemEditableProps, Pr
             initialValues={initialValues}
             validate={values => {
               const errors = {};
-              inputs.forEach(({ name, required, numeric }) => {
-                if (required) errors[name] = Validators.required(values[name]);
-                if (numeric) errors[name] = Validators.number(values[name]);
+              //TODO refactor validators check
+              inputs.forEach(({ name, required, numeric, integer }) => {
+                if (required && !errors[name]) errors[name] = Validators.required(values[name]);
+                if (numeric && !errors[name]) errors[name] = Validators.number(values[name]);
+                if (integer && !errors[name]) errors[name] = Validators.integer(values[name]);
               });
               //removing empty key values from errors object (without it there was a weird problem)
               return _omitBy(errors, _isUndefined);
@@ -106,7 +111,7 @@ class PropertyItemEditable extends React.Component<PropertyItemEditableProps, Pr
               return (
                 <form onSubmit={handleSubmit}>
                   {inputs.map(input => renderField(input, formProps))}
-                  <div styleName="field" className="group-item">
+                  <div styleName="field">
                     <FormButtons {...formProps} onCancel={onCancel} />
                   </div>
                   {/*DEV ONLY - Change debug to true to display additional info*/}

@@ -3,12 +3,16 @@ import * as React from 'react';
 import _throttle from 'lodash/throttle';
 import classnames from 'classnames';
 import styles from './Header.css';
+import ButtonBar from '../../components/common/buttonbar';
+import type { PropertiesContextProps } from '../../providers/Properties';
 
 type HeaderState = {
   isScrolled: boolean,
 };
 
-class Header extends React.PureComponent<null, HeaderState> {
+type HeaderProps = PropertiesContextProps;
+
+class Header extends React.PureComponent<HeaderProps, HeaderState> {
   //$FlowIssue
   scrollY: number;
   scrollListener: any;
@@ -44,14 +48,21 @@ class Header extends React.PureComponent<null, HeaderState> {
   };
 
   render() {
+    const { showAll, showRestricted } = this.props;
     const { isScrolled } = this.state;
 
     const className = classnames({ [styles.scrolled]: isScrolled });
 
+    const navigationButtons = [
+      { label: 'Show all', action: showAll },
+      { label: 'Show in area', action: showRestricted },
+    ];
+
     return (
       <header styleName="menu" className={className}>
         <div styleName="inner-wrapper">
-          <h1>Properties Explorer</h1>
+          <h2>Property Explorer</h2>
+          <ButtonBar buttons={navigationButtons} />
         </div>
       </header>
     );

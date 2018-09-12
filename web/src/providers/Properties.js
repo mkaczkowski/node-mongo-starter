@@ -9,7 +9,11 @@ import * as PropertyApi from '../api/property';
 import type { Property } from '../model/Property';
 import type { GetPropertiesAPI, GetPropertyByIdAPI, UpdatePropertyAPI } from '../api/property';
 
-export type PropertiesProviderState = { isLoading: boolean, properties: Property[] };
+export type PropertiesProviderState = {
+  isLoading: boolean,
+  isRestricted: boolean,
+  properties: Property[],
+};
 
 type PropertiesProviderProps = {
   children: any,
@@ -24,12 +28,13 @@ export type ActionType = {
 
 export type PropertiesContextProps = {
   +isLoading: boolean,
+  +isRestricted: boolean,
+  +showAll: () => any,
+  +showRestricted: () => any,
   +properties: Property[],
   api: {
     +update: (params: ActionType) => Promise<any>,
-    +fetchAll: () => Promise<any>,
     +fetchById: (id: string) => Promise<any>,
-    +fetchByCoordinates: () => Promise<any>,
   },
 };
 
@@ -39,26 +44,37 @@ export const PropertiesContext = React.createContext();
 class PropertiesProvider extends React.PureComponent<PropertiesProviderProps, PropertiesProviderState> {
   state = {
     isLoading: true,
+    isRestricted: false,
     properties: [],
   };
 
-  fetch = async (query?: GetPropertiesAPI) => {
+  componentDidMount() {
+    this.fetch();
+  }
+
+  componentDidUpdate(prevProps: PropertiesProviderProps, prevState: PropertiesProviderState) {
+    if (prevState.isRestricted !== this.state.isRestricted) {
+      this.fetch();
+    }
+  }
+
+  fetch = async () => {
+    const { isRestricted } = this.state;
     this.setState(() => ({ properties: [], isLoading: true }));
+    const query: any = isRestricted ? this.getCoordinates() : undefined;
     const properties = await PropertyApi.getProperties(query);
     this.setState(() => ({ properties, isLoading: false }));
   };
 
-  fetchAll = async () => this.fetch();
+  fetchAll = () => this.setState(() => ({ isRestricted: false }));
 
-  fetchByCoordinates = async () => {
+  fetchByCoordinates = () => this.setState(() => ({ isRestricted: true }));
+
+  getCoordinates = () => {
     // read coordinates from env variables
     const coordinatesString = process.env.RESTRICT_COORDINATES;
     const [latitude, longitude] = coordinatesString ? coordinatesString.split(' ') : [];
-    const data: GetPropertiesAPI = {
-      latitude,
-      longitude,
-    };
-    return this.fetch(data);
+    return { latitude, longitude };
   };
 
   fetchById = async (id: string) => {
@@ -88,10 +104,11 @@ class PropertiesProvider extends React.PureComponent<PropertiesProviderProps, Pr
     //context properties available from all subscribed consumers
     const value: PropertiesContextProps = {
       isLoading: this.state.isLoading,
+      isRestricted: this.state.isRestricted,
       properties: this.state.properties,
+      showAll: this.fetchAll,
+      showRestricted: this.fetchByCoordinates,
       api: {
-        fetchAll: this.fetchAll,
-        fetchByCoordinates: this.fetchByCoordinates,
         fetchById: this.fetchById,
         update: this.update,
       },

@@ -122,7 +122,7 @@ export default {
             use: ['modernizr-loader', 'json-loader'],
           },
           {
-            test: /\.(jpe?g|jpg|gif|ico|png|woff|woff2|eot|ttf|webp)$/,
+            test: /\.(jpe?g|jpg|gif|ico|png|svg|woff|woff2|eot|ttf|webp)$/,
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
